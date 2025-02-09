@@ -9,13 +9,16 @@ class Settings
     public static function init(): void
     {
         add_action('admin_menu', __CLASS__ . '::add_settings');
-        add_action('admin_init', __CLASS__ . '::page_init');
+        add_action('admin_init', __CLASS__ . '::init_settings');
 
     }
 
     public static function get($key): mixed
     {
         $config = apply_filters('aipress_config', get_option('aipress_config', []));
+        if (empty($key)) {
+            return $config;
+        }
         return $config[$key] ?? null;
     }
 
@@ -45,7 +48,14 @@ class Settings
         ?>
         <div class="wrap">
             <h2>AIPress</h2>
+            <?php
+            do_action('aipress_tests');
+            ?>
             <p>Use hook <code>add_filter( 'aipress_config', function( $config ) { ... } )</code> to change the settings.</p>
+            <p>Changes: <a href="https://github.com/aiiddqd/aipress/pulls" target="_blank"
+                    rel="noopener">https://github.com/aiiddqd/aipress/pulls</a></p>
+
+
             <?php settings_errors(); ?>
 
             <form method="post" action="options.php">
@@ -59,30 +69,58 @@ class Settings
         <?php
     }
 
-    public static function page_init()
+    public static function get_form_field_name($key = null): string
+    {
+        if (empty($key)) {
+            return 'aipress_config';
+        }
+
+        return sprintf(
+            'aipress_config[%s]',
+            sanitize_title_with_dashes($key)
+        );
+    }
+
+    public static function init_settings()
     {
         register_setting(
             'aipress_option_group',
-            'aipress_config',
+            self::get_form_field_name(),
         );
 
         add_settings_section(
             'default',
             'Base Settings',
-            function () {
-                echo 'TBD';
-            },
+            '__return_null',
             'aipress-settings-admin'
         );
 
+        self::add_setting_for_api_key();
+
+    }
+
+    public static function add_setting_for_api_key()
+    {
+        $key = 'api_key';
         add_settings_field(
-            'id_number',
-            'ID Number',
-            function () {
-                echo 'TBD';
+            $key,
+            'OPENROUTER API KEY',
+            function ($args) {
+                printf(
+                    '<input type="text" name="%s" value="%s" size="50" />',
+                    esc_attr($args['name']),
+                    esc_attr($args['value'])
+                );
+
+                echo('<p>get key from <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener">https://openrouter.ai/settings/keys</a></p>');
+
             },
             'aipress-settings-admin',
+            'default',
+            [
+                'name' => Settings::get_form_field_name($key),
+                'value' => Settings::get($key) ?? null,
+            ]
         );
-
     }
 }
