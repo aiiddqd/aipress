@@ -1,16 +1,15 @@
 <?php
 
-
 namespace AIPress;
 
 Settings::init();
+
 class Settings
 {
     public static function init(): void
     {
         add_action('admin_menu', __CLASS__ . '::add_settings');
         add_action('admin_init', __CLASS__ . '::init_settings');
-
     }
 
     public static function get($key)
@@ -31,7 +30,6 @@ class Settings
 
     public static function add_settings(): void
     {
-        // Add settings page
         add_options_page(
             'AIPress Settings Admin',
             'AIPress',
@@ -44,7 +42,6 @@ class Settings
 
     public static function create_admin_page(): void
     {
-        // Display page
         ?>
         <div class="wrap">
             <h2>AIPress</h2>
@@ -96,7 +93,6 @@ class Settings
         );
 
         self::add_setting_for_api_key();
-
     }
 
     public static function add_setting_for_api_key()
@@ -112,7 +108,7 @@ class Settings
                     esc_attr($args['value'])
                 );
 
-                echo('<p>get key from <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener">https://openrouter.ai/settings/keys</a></p>');
+                echo ('<p>get key from <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener">https://openrouter.ai/settings/keys</a></p>');
 
             },
             'aipress-settings-admin',
