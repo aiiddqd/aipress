@@ -38,9 +38,6 @@ function prompt($text = '', $args_custom = []): string
         'Authorization' => 'Bearer ' . Settings::get('api_key')
     ];
 
-    // var_dump($headers);
-    // exit;
-
     $response = wp_remote_request(
         $url,
         [
@@ -55,8 +52,6 @@ function prompt($text = '', $args_custom = []): string
 
 
     $result = json_decode(wp_remote_retrieve_body($response), true);
-
-    var_dump($result);
 
     return $result['choices'][0]['message']['content'];
 }
