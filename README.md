@@ -1,0 +1,2 @@
+# aipress
+AI for WordPress
