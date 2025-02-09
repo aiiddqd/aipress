@@ -56,6 +56,7 @@ function prompt($text = '', $args_custom = []): string
     return $result['choices'][0]['message']['content'];
 }
 
+require_once __DIR__ . '/includes/Settings.php';
 foreach (glob(__DIR__ . '/includes/*.php') as $file) {
     require_once $file;
 }
