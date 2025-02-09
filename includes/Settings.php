@@ -16,6 +16,9 @@ class Settings
     public static function get($key): mixed
     {
         $config = apply_filters('aipress_config', get_option('aipress_config', []));
+        if (empty($key)) {
+            return $config;
+        }
         return $config[$key] ?? null;
     }
 
@@ -45,7 +48,14 @@ class Settings
         ?>
         <div class="wrap">
             <h2>AIPress</h2>
+            <?php
+            do_action('aipress_tests');
+            ?>
             <p>Use hook <code>add_filter( 'aipress_config', function( $config ) { ... } )</code> to change the settings.</p>
+            <p>Changes: <a href="https://github.com/aiiddqd/aipress/pulls" target="_blank"
+                    rel="noopener">https://github.com/aiiddqd/aipress/pulls</a></p>
+
+
             <?php settings_errors(); ?>
 
             <form method="post" action="options.php">
@@ -94,13 +104,16 @@ class Settings
         $key = 'api_key';
         add_settings_field(
             $key,
-            'API Key',
+            'OPENROUTER API KEY',
             function ($args) {
                 printf(
-                    '<input type="text" name="%s" value="%s" />',
+                    '<input type="text" name="%s" value="%s" size="50" />',
                     esc_attr($args['name']),
                     esc_attr($args['value'])
                 );
+
+                echo('<p>get key from <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener">https://openrouter.ai/settings/keys</a></p>');
+
             },
             'aipress-settings-admin',
             'default',
