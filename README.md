@@ -1,4 +1,4 @@
-# aipress
+# AIPress
 
 AI for WordPress https://github.com/aiiddqd/aipress
 
@@ -8,7 +8,7 @@ inspired by https://github.com/deepseek-php/deepseek-laravel
 
 roadmap and changes https://github.com/aiiddqd/aipress/pulls
 
-# example
+# Examples
 
 ```php
 <?php 
