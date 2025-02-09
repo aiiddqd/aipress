@@ -43,7 +43,7 @@ function prompt($text = '', $args_custom = []): string
             'method' => 'POST',
             'headers' => $headers,
             'body' => json_encode($args),
-            'timeout' => 111
+            'timeout' => 333
         ]
     );
 
