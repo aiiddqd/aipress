@@ -42,9 +42,11 @@ function prompt($text = '', $args_custom = []): string
         [
             'method' => 'POST',
             'headers' => $headers,
-            'body' => json_encode($args)
+            'body' => json_encode($args),
+            'timeout' => 30
         ]
     );
+
     if (is_wp_error($response)) {
         return $response->get_error_message();
     }
