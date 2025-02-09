@@ -1,6 +1,6 @@
 # aipress
 
-AI for WordPress
+AI for WordPress https://github.com/aiiddqd/aipress
 
 powered by https://openrouter.ai
 
