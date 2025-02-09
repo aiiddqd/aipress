@@ -12,7 +12,6 @@ Text Domain: aipress
 
 namespace AIPress;
 
-
 add_action(
     'aipress_tests',
     function () {
@@ -38,38 +37,35 @@ function prompt($text = '', $args_custom = []): string
         'Authorization' => 'Bearer ' . Settings::get('api_key')
     ];
 
-    // var_dump($headers);
-    // exit;
-
     $response = wp_remote_request(
         $url,
         [
             'method' => 'POST',
             'headers' => $headers,
-            'body' => json_encode($args)
+            'body' => json_encode($args),
+            'timeout' => 333
         ]
     );
+
     if (is_wp_error($response)) {
         return $response->get_error_message();
     }
 
-
     $result = json_decode(wp_remote_retrieve_body($response), true);
-
-    var_dump($result);
 
     return $result['choices'][0]['message']['content'];
 }
 
+foreach (glob(__DIR__ . '/includes/*.php') as $file) {
+    require_once $file;
+}
 
-Main::init();
+// Main::init();
 
 class Main
 {
     public static function init()
     {
-        foreach (glob(__DIR__ . '/includes/*.php') as $file) {
-            require_once $file;
-        }
+
     }
 }
