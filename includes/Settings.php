@@ -13,7 +13,7 @@ class Settings
 
     }
 
-    public static function get($key): mixed
+    public static function get($key)
     {
         $config = apply_filters('aipress_config', get_option('aipress_config', []));
         if (empty($key)) {
