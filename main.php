@@ -12,7 +12,6 @@ Text Domain: aipress
 
 namespace AIPress;
 
-
 add_action(
     'aipress_tests',
     function () {
@@ -50,21 +49,21 @@ function prompt($text = '', $args_custom = []): string
         return $response->get_error_message();
     }
 
-
     $result = json_decode(wp_remote_retrieve_body($response), true);
 
     return $result['choices'][0]['message']['content'];
 }
 
+foreach (glob(__DIR__ . '/includes/*.php') as $file) {
+    require_once $file;
+}
 
-Main::init();
+// Main::init();
 
 class Main
 {
     public static function init()
     {
-        foreach (glob(__DIR__ . '/includes/*.php') as $file) {
-            require_once $file;
-        }
+
     }
 }
