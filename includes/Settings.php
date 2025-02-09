@@ -9,7 +9,7 @@ class Settings
     public static function init(): void
     {
         add_action('admin_menu', __CLASS__ . '::add_settings');
-        add_action('admin_init', __CLASS__ . '::page_init');
+        add_action('admin_init', __CLASS__ . '::init_settings');
 
     }
 
@@ -59,30 +59,55 @@ class Settings
         <?php
     }
 
-    public static function page_init()
+    public static function get_form_field_name($key = null): string
+    {
+        if (empty($key)) {
+            return 'aipress_config';
+        }
+
+        return sprintf(
+            'aipress_config[%s]',
+            sanitize_title_with_dashes($key)
+        );
+    }
+
+    public static function init_settings()
     {
         register_setting(
             'aipress_option_group',
-            'aipress_config',
+            self::get_form_field_name(),
         );
 
         add_settings_section(
             'default',
             'Base Settings',
-            function () {
-                echo 'TBD';
-            },
+            '__return_null',
             'aipress-settings-admin'
         );
 
+        self::add_setting_for_api_key();
+
+    }
+
+    public static function add_setting_for_api_key()
+    {
+        $key = 'api_key';
         add_settings_field(
-            'id_number',
-            'ID Number',
-            function () {
-                echo 'TBD';
+            $key,
+            'API Key',
+            function ($args) {
+                printf(
+                    '<input type="text" name="%s" value="%s" />',
+                    esc_attr($args['name']),
+                    esc_attr($args['value'])
+                );
             },
             'aipress-settings-admin',
+            'default',
+            [
+                'name' => Settings::get_form_field_name($key),
+                'value' => Settings::get($key) ?? null,
+            ]
         );
-
     }
 }
